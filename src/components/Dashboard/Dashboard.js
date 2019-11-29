@@ -16,9 +16,13 @@ export default class Dashboard extends Component {
   componentDidMount() {
     try {
       const transactionFromLocalStorage = localStorage.getItem('transactions');
-      if (transactionFromLocalStorage) {
+      const transactionFromLocalStorageBalance = localStorage.getItem(
+        'balance',
+      );
+      if (transactionFromLocalStorage && transactionFromLocalStorageBalance) {
         this.setState({
           transactions: JSON.parse(transactionFromLocalStorage),
+          balance: JSON.parse(transactionFromLocalStorageBalance),
         });
       }
     } catch (error) {
@@ -30,9 +34,13 @@ export default class Dashboard extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { transactions } = this.state;
-    if (prevState.transactions !== transactions) {
+    const { transactions, balance } = this.state;
+    if (
+      prevState.transactions !== transactions &&
+      prevState.balance !== balance
+    ) {
       localStorage.setItem('transactions', JSON.stringify(transactions));
+      localStorage.setItem('balance', JSON.stringify(balance));
     }
   }
 
